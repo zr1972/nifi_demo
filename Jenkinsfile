@@ -32,9 +32,9 @@ pipeline {
             steps {
                 echo 'connecting to ec2...'
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2_pem', keyFileVariable: 'EC2_PRIVATE_KEY')]) {
-                    sh "
+                    sh '
                         scp -o StrictHostKeyChecking=no -i ${EC2_PRIVATE_KEY} generate_flows.xml ec2-44-204-38-89.compute-1.amazonaws.com:/target/directory/on/ec2
-                    "
+                    '
                 }
             }
 }
