@@ -20,6 +20,11 @@ pipeline {
                 // Checkout your NiFi workflow code from GitHub
                 echo 'checking out git code?'
                 git branch: 'main', url: 'https://github.com/zr1972/nifi_demo.git'
+            }
+        }
+
+        stage('List Files') {
+            steps {
                 sh 'ls -l'
             }
         }
