@@ -14,19 +14,14 @@ pipeline {
         //         echo 'testing nifi workflow'
         //     }
         // }
-        
-        // stage('Deploy') {
-        //     steps {
-        //         // Deploy NiFi workflows to EC2 instance
-        //         echo 'copying files to ec2'
-        //         sshagent(['ec2_pem']) {
-        //             // starting of a shell command block
-        //             sh """ 
-        //             scp -o StrictHostKeyChecking=no -i /path/to/your/keys my-nifi-flow.xml ec2-user@your-ec2-instance.com:/target/directory/on/ec2
-        //             """
-        //         }
-        //     }
-        // }
+
+        stage('Checkout') {
+            steps {
+                // Checkout your NiFi workflow code from GitHub
+                echo 'checking out git code?'
+                git branch: 'main', url: 'https://github.com/zr1972/nifi_demo.git'
+            }
+        }
 
         stage('Deploy to EC2') {
             steps {
