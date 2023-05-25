@@ -20,6 +20,7 @@ pipeline {
                 // Checkout your NiFi workflow code from GitHub
                 echo 'checking out git code?'
                 git branch: 'main', url: 'https://github.com/zr1972/nifi_demo.git'
+                sh 'ls -l'
             }
         }
 
@@ -27,7 +28,7 @@ pipeline {
             steps {
                 echo 'connecting to ec2...'
                 withCredentials([sshUserPrivateKey(credentialsId: 'ec2_pem', keyFileVariable: 'EC2_PRIVATE_KEY')]) {
-                    sh 'scp -i ${EC2_PRIVATE_KEY} ./generate_flows.xml ec2-44-204-38-89.compute-1.amazonaws.com:/'
+                    sh 'scp -i ${EC2_PRIVATE_KEY} generate_flows.xml ec2-44-204-38-89.compute-1.amazonaws.com:/'
                 }
             }
         }
