@@ -47,7 +47,6 @@ pipeline {
                             transfers: [
                                 sshTransfer(
                                     sourceFiles: "generate_flows.xml",
-                                    removePrefix: "dist",
                                     remoteDirectory: "/"
                                 )
                             ]
