@@ -1,3 +1,5 @@
+// if you have other code in a repo, it's often good pratice to have the jenkinsfile in the same repo as well
+
 pipeline {
     agent any
     
@@ -25,7 +27,7 @@ pipeline {
 
         stage('List Files') {
             steps {
-                bat 'dir' // windows cannot run sh, replace it with bat
+                bat 'dir' // sh step is not supported on the Windows, use bat instead
             }
         }
 
@@ -37,6 +39,8 @@ pipeline {
         //         }
         //     }
         // }
+        // having problems using just sshAgent, keeps telling me file doesn't exist
+        // could be that bat and scp don't run together
 
         stage('Deploy to EC2') {
             steps {
