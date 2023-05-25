@@ -25,7 +25,7 @@ pipeline {
 
         stage('List Files') {
             steps {
-                sh 'ls -l'
+                bat 'ls -l'
             }
         }
 
