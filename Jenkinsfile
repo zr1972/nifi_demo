@@ -25,16 +25,35 @@ pipeline {
 
         stage('List Files') {
             steps {
-                bat 'dir'
+                bat 'dir' // windows cannot run sh, replace it with bat
             }
         }
 
+        // stage('Deploy to EC2') {
+        //     steps {
+        //         echo 'connecting to ec2...'
+        //         withCredentials([sshUserPrivateKey(credentialsId: 'ec2_pem', keyFileVariable: 'EC2_PRIVATE_KEY')]) {
+        //             bat 'scp -i ${EC2_PRIVATE_KEY} generate_flows.xml ec2-44-204-38-89.compute-1.amazonaws.com:/'
+        //         }
+        //     }
+        // }
+
         stage('Deploy to EC2') {
             steps {
-                echo 'connecting to ec2...'
-                withCredentials([sshUserPrivateKey(credentialsId: 'ec2_pem', keyFileVariable: 'EC2_PRIVATE_KEY')]) {
-                    bat 'scp -i ${EC2_PRIVATE_KEY} generate_flows.xml ec2-44-204-38-89.compute-1.amazonaws.com:/'
-                }
+                sshPublisher(
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: "ec2",
+                            transfers: [
+                                sshTransfer(
+                                    sourceFiles: "generate_flows.xml",
+                                    removePrefix: "dist",
+                                    remoteDirectory: "/"
+                                )
+                            ]
+                        )
+                    ]
+                )
             }
         }
   
