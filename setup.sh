@@ -17,7 +17,7 @@ sudo rm -rf nifi-1.21.0-bin.zip
 new_host="ec2-3-84-235-234.compute-1.amazonaws.com"
 
 # Use sed to update the nifi.properties file
-sed -i "s/^nifi.web.https.host=.*/nifi.web.https.host=${new_host}/" ./nifi-1.21.0/conf/nifi.properties
+sudo sed -i "s/^nifi.web.https.host=.*/nifi.web.https.host=${new_host}/" ./nifi-1.21.0/conf/nifi.properties
 
 # start nifi
 sudo ./nifi-1.21.0/bin/nifi.sh start
