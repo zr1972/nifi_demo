@@ -15,7 +15,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout your NiFi workflow code from GitHub
-                echo 'checking out git code?'
+                echo 'checking out git code'
                 git branch: 'main', url: 'https://github.com/zr1972/nifi_demo.git'
             }
         }

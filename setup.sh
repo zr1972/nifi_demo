@@ -14,7 +14,7 @@ sudo rm -rf nifi-1.21.0-bin.zip
 
 # go to conf/nifi.properties to change nifi.web.https.host to ec2 ip dns address
 # Set your new port number here
-new_host="ec2-3-84-235-234.compute-1.amazonaws.com"
+new_host="ec2-34-207-159-74.compute-1.amazonaws.com"
 
 # Use sed to update the nifi.properties file
 sudo sed -i "s/^nifi.web.https.host=.*/nifi.web.https.host=${new_host}/" ./nifi-1.21.0/conf/nifi.properties
