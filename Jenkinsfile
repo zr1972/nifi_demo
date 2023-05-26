@@ -45,7 +45,7 @@ pipeline {
                             configName: "ec2",
                             transfers: [
                                 sshTransfer(
-                                    sourceFiles: "generate_flows.xml",
+                                    sourceFiles: "generate_flows.xml", "setup.sh"
                                     remoteDirectory: "/"
                                 )
                             ]
