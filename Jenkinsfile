@@ -4,11 +4,6 @@ pipeline {
     agent any
     
     stages {
-        // stage('Pull from GitHub') {
-        //     steps {
-        //         echo 'pulling from github'
-        //     }
-        // }
         
         // stage('Test NiFi workflow') {
         //     steps {
