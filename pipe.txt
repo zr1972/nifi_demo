@@ -1,0 +1,81 @@
+building a nifi workflow to write data to s3 which will be consumed by SF, hosted to ec2 by jenkins
+
+0. run nifi locally: https://127.0.0.1:8443/nifi/login
+windows: ./bin/.run-nifi.bat
+linux: ./nifi.sh start/stop/restart
+Generated Username [9c783bb0-ee20-47bd-8b51-30afe2ccf5a9]
+Generated Password [VOnTEGLS9s07TwOtrb6NKZzI+NK5gO5K]
+
+1. nifi to s3: https://cloudacademy.com/blog/moving-data-to-s3-with-apache-nifi/
+- acloudguru sandbox, aws -> IAM create user, attach policy S3FullAccess
+- go to user, generate access keys
+access key id: 		AKIA2ZWLA6YCMCZIZAEW
+secret access key: 	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
+- create s3 bucket: nifi-demo516948
+- keep note of s3 region
+
+2. s3 to snowflake via snowpipe: https://docs.snowflake.com/en/user-guide/data-load-snowpipe-auto-s3
+sqs queue is managed by snowflake: show pipes;
+arn:aws:sqs:us-east-1:519629919416:sf-snowpipe-AIDAXR7C3KS4PSZPVJZYF-oUbPzzlY_HGSns-nyqFF4g
+
+3. jenkins to deploy nifi workflow on ec2
+3.1 install jenkins on ec2
+1) install java
+sudo amazon-linux-extras install java-openjdk11 -y
+2) install jenkins on ec2
+sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum upgrade
+sudo yum install -y jenkins
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+
+In a new browser tab, navigate to http://<PUBLIC_IP_ADDRESS>:8080
+get unlock password: 
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+2) install jenkins war
+java -jar jenkins.war
+http://localhost:8080/
+username: nifi_demo
+
+github access token: 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
+
+following: https://dev.to/aws-builders/how-to-set-up-jenkins-and-a-pipeline-on-aws-2pak
+access key:			AKIARGKHQTIEV5LZQ4GZ
+secret access key:  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
+
+3) install nifi on ec2 (nifi)
+sudo yum update -y
+sudo amazon-linux-extras install java-openjdk11 -y
+
+cd /opt
+sudo wget https://dlcdn.apache.org/nifi/1.21.0/nifi-1.21.0-bin.zip
+sudo unzip nifi-1.21.0-bin.zip
+sudo rm -rf nifi-1.21.0-bin.zip
+
+go to conf/nifi.properties to change nifi.web.https.host to ec2 ip dns address
+
+sudo ./nifi.sh start
+check nifi-app.log to get url and pwd
+
+grep Generated nifi-app.log
+
+Generated Username [642125e3-abcd-417f-b530-644627058f58]
+Generated Password [z9lxAPZvvjdV4ghQmvEa38F+bJpH3upF]
+
+curl -X POST 'https://ec2-54-204-184-166.compute-1.amazonaws.com:8443/nifi-api/process-groups/root/process-groups' \
+    -H 'Content-Type: application/json' \
+    -d '{
+        "revision": {
+            "version": 0
+        },
+        "component": {
+            "name": "My Process Group"
+        }
+    }'
+
+
+4. start nifi workflow in ec2
+chmod +x setup.sh
+sed -i 's/\r$//' setup.sh
