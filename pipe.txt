@@ -61,20 +61,14 @@ check nifi-app.log to get url and pwd
 
 grep Generated nifi-app.log
 
-Generated Username [642125e3-abcd-417f-b530-644627058f58]
-Generated Password [z9lxAPZvvjdV4ghQmvEa38F+bJpH3upF]
+Generated Username [c096e3c2-702f-4a2c-9ec5-6658599bdd8e]
+Generated Password [S7oIRJHikprtdFuNluUqliFL/ey3CUoa]
 
-curl -X POST 'https://ec2-54-204-184-166.compute-1.amazonaws.com:8443/nifi-api/process-groups/root/process-groups' \
-    -H 'Content-Type: application/json' \
-    -d '{
-        "revision": {
-            "version": 0
-        },
-        "component": {
-            "name": "My Process Group"
-        }
-    }'
-
+--
+install nifi toolkit on ec2
+sudo wget https://dlcdn.apache.org/nifi/1.21.0/nifi-toolkit-1.21.0-bin.zip
+sudo unzip nifi-toolkit-1.21.0-bin.zip
+sudo rm -rf nifi-toolkit-1.21.0-bin.zip
 
 4. start nifi workflow in ec2
 chmod +x setup.sh
